@@ -1,0 +1,16 @@
+main
+	__CC2DW
+		____DoICP
+	ADC_Init
+	ADC_Read
+		Delay_22us
+	Mul_16X16_U
+	Div_16x16_S
+		Div_16x16_S_L
+	int2double
+		NRM3232
+			RES032
+			SETFUN32
+			FIXSIGN32
+	Compare_Double
+	Display

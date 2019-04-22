@@ -3,7 +3,7 @@
 #define DIGIT3 PORTC.RC6
 
 
-int leitura = 0;
+int leitura  = 0;
 float ph = 0;
 int Msd,Lsd,Cnt = 0;
 
@@ -25,8 +25,8 @@ void main() //inicio programa principal
 
 while(1) //loop infinito
 {
-    leitura = ADC_Read(0);
-    ph = ((leitura * 14) / 1024) ;
+    leitura = ADC_Read(1);
+    ph = ((leitura * 14) / 1023) ;
 
 
               if (ph >= 0 && ph < 0.8)
@@ -78,16 +78,15 @@ while(1) //loop infinito
               Cnt = 12;
 
               
-              if(ph >= 12.8 && ph < 13.8)
+              if(ph >= 12.8 && ph < 13.5)
               Cnt = 13;
 
-              if(ph >= 13.8)
+              if(ph >= 13.5)
               Cnt = 14;
 
 
 
     
-    Cnt = leitura;
     delay_us(180);
 
 

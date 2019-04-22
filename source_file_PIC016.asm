@@ -11,7 +11,8 @@ _main:
 	BCF        PORTC+0, 6
 	CALL       _ADC_Init+0
 L_main0:
-	CLRF       FARG_ADC_Read_channel+0
+	MOVLW      1
+	MOVWF      FARG_ADC_Read_channel+0
 	CALL       _ADC_Read+0
 	MOVF       R0+0, 0
 	MOVWF      _leitura+0
@@ -22,9 +23,9 @@ L_main0:
 	MOVLW      0
 	MOVWF      R4+1
 	CALL       _Mul_16X16_U+0
-	MOVLW      0
+	MOVLW      255
 	MOVWF      R4+0
-	MOVLW      4
+	MOVLW      3
 	MOVWF      R4+1
 	CALL       _Div_16x16_S+0
 	CALL       _int2double+0
@@ -748,11 +749,11 @@ L_main40:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main43
-	MOVLW      205
+	MOVLW      0
 	MOVWF      R4+0
-	MOVLW      204
+	MOVLW      0
 	MOVWF      R4+1
-	MOVLW      92
+	MOVLW      88
 	MOVWF      R4+2
 	MOVLW      130
 	MOVWF      R4+3
@@ -778,11 +779,11 @@ L__main48:
 	MOVLW      0
 	MOVWF      _Cnt+1
 L_main43:
-	MOVLW      205
+	MOVLW      0
 	MOVWF      R4+0
-	MOVLW      204
+	MOVLW      0
 	MOVWF      R4+1
-	MOVLW      92
+	MOVLW      88
 	MOVWF      R4+2
 	MOVLW      130
 	MOVWF      R4+3
@@ -807,10 +808,6 @@ L_main43:
 	MOVLW      0
 	MOVWF      _Cnt+1
 L_main44:
-	MOVF       _leitura+0, 0
-	MOVWF      _Cnt+0
-	MOVF       _leitura+1, 0
-	MOVWF      _Cnt+1
 	MOVLW      2
 	MOVWF      R12+0
 	MOVLW      41

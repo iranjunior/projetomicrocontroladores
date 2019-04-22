@@ -1,4 +1,4 @@
-#line 1 "C:/Users/IranJunior/Downloads/PIC016_files_WR/arquivos_PIC016/source_file_PIC016/source_file_PIC016.c"
+#line 1 "D:/ENGENHARIA DE CONTROLE E AUTOMAÇÃO/9 º PERIODO/Microcontroladores/source_file_PIC016.c"
 
 
 
@@ -26,8 +26,8 @@ void main()
 
 while(1)
 {
- leitura = ADC_Read(0);
- ph = ((leitura * 14) / 1024) ;
+ leitura = ADC_Read(1);
+ ph = ((leitura * 14) / 1023) ;
 
 
  if (ph >= 0 && ph < 0.8)
@@ -79,16 +79,15 @@ while(1)
  Cnt = 12;
 
 
- if(ph >= 12.8 && ph < 13.8)
+ if(ph >= 12.8 && ph < 13.5)
  Cnt = 13;
 
- if(ph >= 13.8)
+ if(ph >= 13.5)
  Cnt = 14;
 
 
 
 
- Cnt = leitura;
  delay_us(180);
 
 

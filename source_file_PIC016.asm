@@ -4,6 +4,15 @@ _main:
 	MOVLW      197
 	MOVWF      ADCON0+0
 	CLRF       CMCON+0
+	MOVLW      128
+	MOVWF      OPTION_REG+0
+	MOVLW      255
+	MOVWF      T1CON+0
+	CLRF       TMR0+0
+	BSF        GIE_bit+0, BitPos(GIE_bit+0)
+	BSF        PEIE_bit+0, BitPos(PEIE_bit+0)
+	BSF        T0IE_bit+0, BitPos(T0IE_bit+0)
+	BSF        ADIE_bit+0, BitPos(ADIE_bit+0)
 	CLRF       TRISC+0
 	CLRF       TRISB+0
 	CLRF       PORTB+0
@@ -11,36 +20,18 @@ _main:
 	BCF        PORTC+0, 6
 	CALL       _ADC_Init+0
 L_main0:
-	MOVLW      1
-	MOVWF      FARG_ADC_Read_channel+0
-	CALL       _ADC_Read+0
-	MOVF       R0+0, 0
-	MOVWF      _leitura+0
-	MOVF       R0+1, 0
-	MOVWF      _leitura+1
-	MOVLW      14
-	MOVWF      R4+0
-	MOVLW      0
-	MOVWF      R4+1
-	CALL       _Mul_16X16_U+0
-	MOVLW      255
-	MOVWF      R4+0
-	MOVLW      3
-	MOVWF      R4+1
-	CALL       _Div_16x16_S+0
-	CALL       _int2double+0
-	MOVF       R0+0, 0
-	MOVWF      _ph+0
-	MOVF       R0+1, 0
-	MOVWF      _ph+1
-	MOVF       R0+2, 0
-	MOVWF      _ph+2
-	MOVF       R0+3, 0
-	MOVWF      _ph+3
 	CLRF       R4+0
 	CLRF       R4+1
 	CLRF       R4+2
 	CLRF       R4+3
+	MOVF       _ph+0, 0
+	MOVWF      R0+0
+	MOVF       _ph+1, 0
+	MOVWF      R0+1
+	MOVF       _ph+2, 0
+	MOVWF      R0+2
+	MOVF       _ph+3, 0
+	MOVWF      R0+3
 	CALL       _Compare_Double+0
 	MOVLW      1
 	BTFSS      STATUS+0, 0
@@ -73,7 +64,7 @@ L_main0:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main4
-L__main61:
+L__main63:
 	CLRF       _Cnt+0
 	CLRF       _Cnt+1
 L_main4:
@@ -125,7 +116,7 @@ L_main4:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main7
-L__main60:
+L__main62:
 	MOVLW      1
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -179,7 +170,7 @@ L_main7:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main10
-L__main59:
+L__main61:
 	MOVLW      2
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -233,7 +224,7 @@ L_main10:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main13
-L__main58:
+L__main60:
 	MOVLW      3
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -287,7 +278,7 @@ L_main13:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main16
-L__main57:
+L__main59:
 	MOVLW      4
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -341,7 +332,7 @@ L_main16:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main19
-L__main56:
+L__main58:
 	MOVLW      5
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -395,7 +386,7 @@ L_main19:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main22
-L__main55:
+L__main57:
 	MOVLW      6
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -449,7 +440,7 @@ L_main22:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main25
-L__main54:
+L__main56:
 	MOVLW      7
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -503,7 +494,7 @@ L_main25:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main28
-L__main53:
+L__main55:
 	MOVLW      8
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -557,7 +548,7 @@ L_main28:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main31
-L__main52:
+L__main54:
 	MOVLW      9
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -611,7 +602,7 @@ L_main31:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main34
-L__main51:
+L__main53:
 	MOVLW      10
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -665,7 +656,7 @@ L_main34:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main37
-L__main50:
+L__main52:
 	MOVLW      11
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -719,7 +710,7 @@ L_main37:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main40
-L__main49:
+L__main51:
 	MOVLW      12
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -773,7 +764,7 @@ L_main40:
 	MOVF       R0+0, 0
 	BTFSC      STATUS+0, 2
 	GOTO       L_main43
-L__main48:
+L__main50:
 	MOVLW      13
 	MOVWF      _Cnt+0
 	MOVLW      0
@@ -808,17 +799,6 @@ L_main43:
 	MOVLW      0
 	MOVWF      _Cnt+1
 L_main44:
-	MOVLW      2
-	MOVWF      R12+0
-	MOVLW      41
-	MOVWF      R13+0
-L_main45:
-	DECFSZ     R13+0, 1
-	GOTO       L_main45
-	DECFSZ     R12+0, 1
-	GOTO       L_main45
-	NOP
-	NOP
 	MOVLW      100
 	MOVWF      R4+0
 	MOVLW      0
@@ -873,35 +853,12 @@ L_main45:
 	CALL       _Div_16x16_S+0
 	MOVF       R0+0, 0
 	SUBWF      FLOC__main+0, 0
-	MOVWF      R0+0
+	MOVWF      _Msd+0
 	MOVF       R0+1, 0
 	BTFSS      STATUS+0, 0
 	ADDLW      1
 	SUBWF      FLOC__main+1, 0
-	MOVWF      R0+1
-	MOVF       R0+0, 0
-	MOVWF      _Msd+0
-	MOVF       R0+1, 0
 	MOVWF      _Msd+1
-	MOVF       R0+0, 0
-	MOVWF      FARG_Display_no+0
-	MOVF       R0+1, 0
-	MOVWF      FARG_Display_no+1
-	CALL       _Display+0
-	MOVF       R0+0, 0
-	MOVWF      PORTB+0
-	BSF        PORTC+0, 7
-	MOVLW      33
-	MOVWF      R12+0
-	MOVLW      118
-	MOVWF      R13+0
-L_main46:
-	DECFSZ     R13+0, 1
-	GOTO       L_main46
-	DECFSZ     R12+0, 1
-	GOTO       L_main46
-	NOP
-	BCF        PORTC+0, 7
 	MOVLW      10
 	MOVWF      R4+0
 	MOVLW      0
@@ -919,25 +876,17 @@ L_main46:
 	MOVWF      _Lsd+0
 	MOVF       R0+1, 0
 	MOVWF      _Lsd+1
-	MOVF       R0+0, 0
-	MOVWF      FARG_Display_no+0
-	MOVF       R0+1, 0
-	MOVWF      FARG_Display_no+1
-	CALL       _Display+0
-	MOVF       R0+0, 0
-	MOVWF      PORTB+0
-	BSF        PORTC+0, 6
-	MOVLW      33
+	MOVLW      2
 	MOVWF      R12+0
-	MOVLW      118
+	MOVLW      41
 	MOVWF      R13+0
-L_main47:
+L_main45:
 	DECFSZ     R13+0, 1
-	GOTO       L_main47
+	GOTO       L_main45
 	DECFSZ     R12+0, 1
-	GOTO       L_main47
+	GOTO       L_main45
 	NOP
-	BCF        PORTC+0, 6
+	NOP
 	GOTO       L_main0
 L_end_main:
 	GOTO       $+0
@@ -1001,3 +950,86 @@ _Display:
 L_end_Display:
 	RETURN
 ; end of _Display
+
+_interrupt:
+	MOVWF      R15+0
+	SWAPF      STATUS+0, 0
+	CLRF       STATUS+0
+	MOVWF      ___saveSTATUS+0
+	MOVF       PCLATH+0, 0
+	MOVWF      ___savePCLATH+0
+	CLRF       PCLATH+0
+
+	BTFSS      ADIF_bit+0, BitPos(ADIF_bit+0)
+	GOTO       L_interrupt46
+	MOVLW      1
+	MOVWF      FARG_ADC_Read_channel+0
+	CALL       _ADC_Read+0
+	MOVF       R0+0, 0
+	MOVWF      _leitura+0
+	MOVF       R0+1, 0
+	MOVWF      _leitura+1
+	MOVLW      14
+	MOVWF      R4+0
+	MOVLW      0
+	MOVWF      R4+1
+	CALL       _Mul_16X16_U+0
+	MOVLW      255
+	MOVWF      R4+0
+	MOVLW      3
+	MOVWF      R4+1
+	CALL       _Div_16x16_S+0
+	CALL       _int2double+0
+	MOVF       R0+0, 0
+	MOVWF      _ph+0
+	MOVF       R0+1, 0
+	MOVWF      _ph+1
+	MOVF       R0+2, 0
+	MOVWF      _ph+2
+	MOVF       R0+3, 0
+	MOVWF      _ph+3
+L_interrupt46:
+	BTFSS      T0IF_bit+0, BitPos(T0IF_bit+0)
+	GOTO       L_interrupt47
+	MOVF       _digital+0, 0
+	IORWF      _digital+1, 0
+	BTFSC      STATUS+0, 2
+	GOTO       L_interrupt48
+	MOVF       _Msd+0, 0
+	MOVWF      FARG_Display_no+0
+	MOVF       _Msd+1, 0
+	MOVWF      FARG_Display_no+1
+	CALL       _Display+0
+	MOVF       R0+0, 0
+	MOVWF      PORTB+0
+	BSF        PORTC+0, 7
+	BCF        PORTC+0, 7
+	CLRF       _digital+0
+	CLRF       _digital+1
+	GOTO       L_interrupt49
+L_interrupt48:
+	MOVF       _Lsd+0, 0
+	MOVWF      FARG_Display_no+0
+	MOVF       _Lsd+1, 0
+	MOVWF      FARG_Display_no+1
+	CALL       _Display+0
+	MOVF       R0+0, 0
+	MOVWF      PORTB+0
+	BSF        PORTC+0, 6
+	BCF        PORTC+0, 6
+	MOVLW      1
+	MOVWF      _digital+0
+	MOVLW      0
+	MOVWF      _digital+1
+L_interrupt49:
+L_interrupt47:
+L_end_interrupt:
+L__interrupt67:
+	MOVF       ___savePCLATH+0, 0
+	MOVWF      PCLATH+0
+	SWAPF      ___saveSTATUS+0, 0
+	MOVWF      STATUS+0
+	SWAPF      R15+0, 1
+	SWAPF      R15+0, 0
+	RETFIE
+; end of _interrupt

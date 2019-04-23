@@ -6,15 +6,24 @@
 int leitura  = 0;
 float ph = 0;
 int Msd,Lsd,Cnt = 0;
-
+int digital = 1 ;
 
 int Display(int no);
-void changeCount(int valor);
+void interrupt();
 
 void main() //inicio programa principal
 {
     ADCON0 =  0xC5;
     CMCON = 0x00;
+    
+    OPTION_REG =  0x80;
+    T1CON = 0xFF;
+    TMR0 = 0x00;
+    GIE_bit = 0x01;
+    PEIE_bit = 0x01;
+    T0IE_bit = 0x01;
+    
+    ADIE_bit = 0x01;
     
     TRISC  = 0x00;
     TRISB  = 0x00;//PORTB configurado como saídas
@@ -25,10 +34,6 @@ void main() //inicio programa principal
 
 while(1) //loop infinito
 {
-    leitura = ADC_Read(1);
-    ph = ((leitura * 14) / 1023) ;
-
-
               if (ph >= 0 && ph < 0.8)
               Cnt = 0;
 
@@ -83,38 +88,54 @@ while(1) //loop infinito
 
               if(ph >= 13.5)
               Cnt = 14;
+              
+          Msd = (Cnt%100);
+          Msd = (Msd/10) - ((Msd%10)/10); // "5"
+          Lsd=Cnt%10;                     //digito menos significativo ou unidade
 
-
-
-    
-    delay_us(180);
-
-
- Msd = (Cnt%100);   //53   , 5,3 , 3  ,   0,3
- Msd = (Msd/10) - ((Msd%10)/10); // "5"
-
- PORTB=Display(Msd);               //Envia para PORTB
- DIGIT2=1;                         //habilita digito 2(dezena)
- delay_ms(5);                      //aguarda 5 milisegundos
- DIGIT2=0;                         //desabilita digito 2(dezena)
-                                   //"3"
- Lsd=Cnt%10;                       //digito menos significativo ou unidade
-
- PORTB=Display(Lsd);               //Envia para PORTB
- DIGIT3=1;                         //habilita digito 3(unidade)
- delay_ms(5);                      //aguarda 5 milisegundos
- DIGIT3=0;                         //desabilita digito 3(unidade)
-} // end while
+          delay_us(180);
+    } // end while
 } //end void main
 
 
 //esta função acha o bit pattern(matrix de bits) para ser enviado
 //para o PORTB e mostrar um número no display de 7 segmentos.O número
 //é passado como um argumento para a função.
-int Display(int no)
-{
-int Pattern;
-int SEGMENTO[] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09};
-Pattern=SEGMENTO[no]; //para retornar o Pattern
-return(Pattern);
-} //end função
+    int Display(int no){
+        int Pattern;
+        int SEGMENTO[] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09};
+        Pattern = SEGMENTO[no]; //para retornar o Pattern
+        return(Pattern);
+    }
+
+    void interrupt(){
+     if(ADIF_bit){
+            leitura = ADC_Read(1);
+            ph = ((leitura * 14) / 1023) ;
+
+     }
+     
+     if(T0IF_bit){
+
+        if(digital) {
+
+          PORTB=Display(Msd);               //Envia para PORTB
+          //PORTB = 0x07;
+          DIGIT2=1;                         //habilita digito 2(dezena)
+          DIGIT2=0;                         //desabilita digito 2(dezena)
+                                            //"3"
+          digital = 0;
+        }
+         else{
+
+           PORTB=Display(Lsd);               //Envia para PORTB
+           //PORTB = 0x03;
+           DIGIT3=1;                         //habilita digito 3(unidade)
+           DIGIT3=0;                         //desabilita digito 3(unidade)
+           digital = 1;
+         }
+
+     }
+}
+
+//end função

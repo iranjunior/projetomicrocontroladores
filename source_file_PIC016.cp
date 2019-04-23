@@ -7,15 +7,24 @@
 int leitura = 0;
 float ph = 0;
 int Msd,Lsd,Cnt = 0;
-
+int digital = 1 ;
 
 int Display(int no);
-void changeCount(int valor);
+void interrupt();
 
 void main()
 {
  ADCON0 = 0xC5;
  CMCON = 0x00;
+
+ OPTION_REG = 0x80;
+ T1CON = 0xFF;
+ TMR0 = 0x00;
+ GIE_bit = 0x01;
+ PEIE_bit = 0x01;
+ T0IE_bit = 0x01;
+
+ ADIE_bit = 0x01;
 
  TRISC = 0x00;
  TRISB = 0x00;
@@ -26,10 +35,6 @@ void main()
 
 while(1)
 {
- leitura = ADC_Read(1);
- ph = ((leitura * 14) / 1023) ;
-
-
  if (ph >= 0 && ph < 0.8)
  Cnt = 0;
 
@@ -85,37 +90,51 @@ while(1)
  if(ph >= 13.5)
  Cnt = 14;
 
-
-
-
- delay_us(180);
-
-
  Msd = (Cnt%100);
  Msd = (Msd/10) - ((Msd%10)/10);
-
- PORTB=Display(Msd);
-  PORTC.RC7 =1;
- delay_ms(5);
-  PORTC.RC7 =0;
-
  Lsd=Cnt%10;
 
+ delay_us(180);
+ }
+}
+
+
+
+
+
+ int Display(int no){
+ int Pattern;
+ int SEGMENTO[] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09};
+ Pattern = SEGMENTO[no];
+ return(Pattern);
+ }
+
+ void interrupt(){
+ if(ADIF_bit){
+ leitura = ADC_Read(1);
+ ph = ((leitura * 14) / 1023) ;
+
+ }
+
+ if(T0IF_bit){
+
+ if(digital) {
+
+ PORTB=Display(Msd);
+
+  PORTC.RC7 =1;
+  PORTC.RC7 =0;
+
+ digital = 0;
+ }
+ else{
+
  PORTB=Display(Lsd);
+
   PORTC.RC6 =1;
- delay_ms(5);
   PORTC.RC6 =0;
-}
-}
+ digital = 1;
+ }
 
-
-
-
-
-int Display(int no)
-{
-int Pattern;
-int SEGMENTO[] = {0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09};
-Pattern=SEGMENTO[no];
-return(Pattern);
+ }
 }

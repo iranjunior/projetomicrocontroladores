@@ -45,7 +45,7 @@ Count=0
 [PLDS]
 Count=0
 [Useses]
-Count=10
+Count=11
 File0=Button
 File1=Lcd_Constants
 File2=PWM
@@ -56,5 +56,6 @@ File6=Port_Expander
 File7=MemManager
 File8=Conversions
 File9=C_Math
+File10=Time
 [EXPANDED_NODES]
 Count=0

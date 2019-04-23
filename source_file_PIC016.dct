@@ -218,6 +218,7 @@ delay_5ms
 delay_80us
 delay_8ms
 delay_cyc
+digital
 display
 div_16x16_s
 div_16x16_s_l
@@ -300,6 +301,7 @@ inte
 inte_bit
 intedg
 intedg_bit
+interrupt
 intf
 intf_bit
 inttohex
@@ -630,6 +632,9 @@ t2ckps1_bit
 t2con
 tan
 tanh
+time_datetoepoch
+time_epochtodate
+time_jd1970
 tmr0
 tmr0ie
 tmr0ie_bit

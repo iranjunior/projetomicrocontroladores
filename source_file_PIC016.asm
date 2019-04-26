@@ -1,7 +1,7 @@
 
 _main:
 
-	MOVLW      197
+	MOVLW      201
 	MOVWF      ADCON0+0
 	CLRF       CMCON+0
 	CLRF       TRISC+0

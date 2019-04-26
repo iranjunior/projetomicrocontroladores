@@ -14,7 +14,7 @@ void changeCount(int valor);
 
 void main()
 {
- ADCON0 = 0xC5;
+ ADCON0 = 0xC9;
  CMCON = 0x00;
 
  TRISC = 0x00;

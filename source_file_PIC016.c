@@ -13,7 +13,7 @@ void interrupt();
 
 void main() //inicio programa principal
 {
-    ADCON0 =  0xC5;
+    ADCON0 =  0xC9;
     CMCON = 0x00;
     
     OPTION_REG =  0x80;
@@ -21,19 +21,22 @@ void main() //inicio programa principal
     TMR0 = 0x00;
     GIE_bit = 0x01;
     PEIE_bit = 0x01;
-    T0IE_bit = 0x01;
+    TMR0IE_bit = 0x01;
     
-    ADIE_bit = 0x01;
+    //ADIE_bit = 0x01;
     
     TRISC  = 0x00;
     TRISB  = 0x00;//PORTB configurado como saídas
     PORTB  = 0x00;
     DIGIT2 = 0; //Desabilita Digito1
     DIGIT3 = 0; //Desabilita Digito2
-    adc_init();
+    //adc_init();
 
 while(1) //loop infinito
 {
+              leitura = ADC_Read(1);
+              ph = ((leitura * 14) / 1023) ;
+              
               if (ph >= 0 && ph < 0.8)
               Cnt = 0;
 
@@ -109,12 +112,6 @@ while(1) //loop infinito
     }
 
     void interrupt(){
-     if(ADIF_bit){
-            leitura = ADC_Read(1);
-            ph = ((leitura * 14) / 1023) ;
-
-     }
-     
      if(T0IF_bit){
 
         if(digital) {

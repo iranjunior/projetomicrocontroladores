@@ -151,9 +151,9 @@
    </POPUP>
    <POPUP w="600" x="0" flags="0000802b" y="134" h="400" pid="1" iid="4">
     <PROPERTIES>
-     <ITEM name="Breakpoint 0">"",055E,0000,5DA9,D761,1
+     <ITEM name="Breakpoint 0">"",0564,0000,5DA9,D761,1
 </ITEM>
-     <ITEM name="Breakpoint 1">"",0593,0000,1B54,D761,-1
+     <ITEM name="Breakpoint 1">"",058B,0000,5DA9,D761,-1
 </ITEM>
      <ITEM name="CaseSensitive">No</ITEM>
      <ITEM name="DISPADDRS">Yes</ITEM>

@@ -1,4 +1,4 @@
-#line 1 "D:/ENGENHARIA DE CONTROLE E AUTOMAÇÃO/9 º PERIODO/Microcontroladores/source_file_PIC016.c"
+#line 1 "D:/ENGENHARIA DE CONTROLE E AUTOMAÇÃO/9 º PERIODO/Microcontroladores/projetomicrocontroladores/source_file_PIC016.c"
 
 
 
@@ -14,7 +14,7 @@ void interrupt();
 
 void main()
 {
- ADCON0 = 0xC5;
+ ADCON0 = 0xC9;
  CMCON = 0x00;
 
  OPTION_REG = 0x80;
@@ -22,19 +22,22 @@ void main()
  TMR0 = 0x00;
  GIE_bit = 0x01;
  PEIE_bit = 0x01;
- T0IE_bit = 0x01;
+ TMR0IE_bit = 0x01;
 
- ADIE_bit = 0x01;
+
 
  TRISC = 0x00;
  TRISB = 0x00;
  PORTB = 0x00;
   PORTC.RC7  = 0;
   PORTC.RC6  = 0;
- adc_init();
+
 
 while(1)
 {
+ leitura = ADC_Read(1);
+ ph = ((leitura * 14) / 1023) ;
+
  if (ph >= 0 && ph < 0.8)
  Cnt = 0;
 
@@ -110,12 +113,6 @@ while(1)
  }
 
  void interrupt(){
- if(ADIF_bit){
- leitura = ADC_Read(1);
- ph = ((leitura * 14) / 1023) ;
-
- }
-
  if(T0IF_bit){
 
  if(digital) {

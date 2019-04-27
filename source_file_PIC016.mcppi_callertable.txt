@@ -1,11 +1,6 @@
 main
 	__CC2DW
 		____DoICP
-	ADC_Init
-	Compare_Double
-	Div_16x16_S
-		Div_16x16_S_L
-interrupt
 	ADC_Read
 		Delay_22us
 	Mul_16X16_U
@@ -16,4 +11,6 @@ interrupt
 			RES032
 			SETFUN32
 			FIXSIGN32
+	Compare_Double
+interrupt
 	Display

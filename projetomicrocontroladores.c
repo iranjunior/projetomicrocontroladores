@@ -1,76 +1,56 @@
 #define  DIGIT2  RB4_bit
 #define  DIGIT3  RB5_bit
-#define  cima    RE0_bit
-#define  ok      RE1_bit
-#define  baixo   RE2_bit
+#define  cima    RA3_bit
+#define  ok      RA4_bit
+#define  baixo   RA5_bit
+#define TRUE    1
+#define FALSE   0
 
-int Msd,Lsd,Cnt = 0;
-int digital = 1 ;
+bit oldstateCima, oldstateBaixo ,oldstateOk;
+int Msd,Lsd= 0;
+int digital = 1 ; int estado = 1;
+char uart_rd; char txt[7]; char st[7]; long int valorAD = 0;
 
-char uart_rd;
-char txt[7];
-char st[7];
-long int valorAD = 0;
-int estado = 1;  //estado == 0 mostra o que está sendo lido na entrada analogica
-                 // estado == 1 mostra o setpoint
 int setpoint = 13;
 int Display(int no);
 
 
 void interrupt(){
      if(TMR0IF_bit){
-
-
        if(digital){
           if(estado){
             PORTB = Display((setpoint/10) - ((setpoint%10)/10));
             DIGIT2 = 1;
             DIGIT3 = 0;
-            digital = 0;
-            estado = 0;
-          }
+            }
           else{
           PORTB = Display(Msd);
           DIGIT2 = 1;
           DIGIT3 = 0;
-          digital = 0;
-          estado = 0;
           }
+          
+          digital = 0;
        }
-        else{
+
+      else{
           if(estado){
             PORTB = Display(setpoint%10);
             DIGIT2 = 0;
             DIGIT3 = 1;
             digital = 1;
-            estado = 0;
           }
           else{
           PORTB = Display(Lsd);
           DIGIT2 = 0;
           DIGIT3 = 1;
           digital = 1;
-          estado = 0;
           }
+
         }
        TMR0IF_bit = 0;
        TMR0 = 0x64;
      }
 
-  if (TMR1IF_bit){
-    if(cima){
-     estado = estado == 1 ? 0 : 1;
-    }
-    if(baixo){
-    }
-    if(ok){
-    }
-
-    TMR1IF_bit = 0;
-    TMR1H         = 0x0B;
-    TMR1L         = 0xDC;
-    //Enter your code here
-  }
 
 }
 
@@ -81,18 +61,19 @@ void main()
   ADCON1 = 0x0E;                // Tornar todo ADC digital
 
   TRISA.RA0 = 0x01;
+  TRISA.RA3 = 0x01;
+  TRISA.RA4 = 0x01;
+  TRISA.RA5 = 0x01;
 
-  T1CON         = 0x31;
-  TMR1IF_bit         = 0;
-  TMR1H         = 0x0B;
-  TMR1L         = 0xDC;
-  TMR1IE_bit         = 1;
-
+  
   OPTION_REG =  0x87;
-  T1CON = 0x09;
   TMR0 = 0x64;
   INTCON = 0xE0;
-  TRISE = 0xFF;
+  TRISE0_bit = 0x01;
+  TRISE1_bit = 0x01;
+  TRISE2_bit = 0x01;
+
+
   TRISB  = 0x00;//PORTB configurado como saídas
   PORTB  = 0x00;
   DIGIT2 = 0; //Desabilita Digito1
@@ -110,6 +91,15 @@ void main()
       valorAD = ADC_Read(0);
       valorAD = ((valorAD * 14) / 1023) ;
 
+      if(estado){
+      IntToStr(cima, st);
+
+      UART1_Write_Text(st);
+      UART1_Write_Text(" Set point");
+      UART1_Write(10);               // Realimentação de linha
+      UART1_Write(13);               // Quebra de linha
+      UART1_Write(13);               // Quebra de linha
+      }else{
       IntToStr(valorAD, txt);
 
       UART1_Write_Text(txt);
@@ -117,15 +107,15 @@ void main()
       UART1_Write(10);               // Realimentação de linha
       UART1_Write(13);               // Quebra de linha
 
-      IntToStr(setpoint, st);
-      UART1_Write_Text(st);
-      UART1_Write_Text(" Set point");
-      UART1_Write(10);               // Realimentação de linha
-      UART1_Write(13);               // Quebra de linha
-      UART1_Write(13);               // Quebra de linha
-
-      
-      delay_ms(100);
+      }
+      if(!cima){
+       oldstateCima = 1;
+       delay_ms(100);
+      }
+      if(oldstateCima && !cima){
+      estado = ~estado;
+      oldstateCima = 0;
+      }
          Msd = (valorAD/10) - ((valorAD%10)/10); // "5"
          Lsd = valorAD%10;                     //digito menos significativo ou unidade
 

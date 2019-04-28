@@ -153,7 +153,6 @@ cmie
 cmie_bit
 cmif
 cmif_bit
-cnt
 comfrem
 compare_double
 cos
@@ -372,6 +371,9 @@ obf_bit
 obf_trise_bit
 oerr
 oerr_bit
+oldstatebaixo
+oldstatecima
+oldstateok
 option_reg
 p
 p_bit

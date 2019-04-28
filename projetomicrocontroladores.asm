@@ -62,10 +62,6 @@ _interrupt:
 	MOVWF      PORTB+0
 	BSF        RB4_bit+0, BitPos(RB4_bit+0)
 	BCF        RB5_bit+0, BitPos(RB5_bit+0)
-	CLRF       _digital+0
-	CLRF       _digital+1
-	CLRF       _estado+0
-	CLRF       _estado+1
 	GOTO       L_interrupt3
 L_interrupt2:
 	MOVF       _Msd+0, 0
@@ -77,11 +73,9 @@ L_interrupt2:
 	MOVWF      PORTB+0
 	BSF        RB4_bit+0, BitPos(RB4_bit+0)
 	BCF        RB5_bit+0, BitPos(RB5_bit+0)
+L_interrupt3:
 	CLRF       _digital+0
 	CLRF       _digital+1
-	CLRF       _estado+0
-	CLRF       _estado+1
-L_interrupt3:
 	GOTO       L_interrupt4
 L_interrupt1:
 	MOVF       _estado+0, 0
@@ -114,8 +108,6 @@ L_interrupt1:
 	MOVWF      _digital+0
 	MOVLW      0
 	MOVWF      _digital+1
-	CLRF       _estado+0
-	CLRF       _estado+1
 	GOTO       L_interrupt6
 L_interrupt5:
 	MOVF       _Lsd+0, 0
@@ -131,54 +123,14 @@ L_interrupt5:
 	MOVWF      _digital+0
 	MOVLW      0
 	MOVWF      _digital+1
-	CLRF       _estado+0
-	CLRF       _estado+1
 L_interrupt6:
 L_interrupt4:
 	BCF        TMR0IF_bit+0, BitPos(TMR0IF_bit+0)
 	MOVLW      100
 	MOVWF      TMR0+0
 L_interrupt0:
-	BTFSS      TMR1IF_bit+0, BitPos(TMR1IF_bit+0)
-	GOTO       L_interrupt7
-	BTFSS      RE0_bit+0, BitPos(RE0_bit+0)
-	GOTO       L_interrupt8
-	MOVLW      0
-	XORWF      _estado+1, 0
-	BTFSS      STATUS+0, 2
-	GOTO       L__interrupt19
-	MOVLW      1
-	XORWF      _estado+0, 0
-L__interrupt19:
-	BTFSS      STATUS+0, 2
-	GOTO       L_interrupt9
-	CLRF       ?FLOC___interruptT6+0
-	GOTO       L_interrupt10
-L_interrupt9:
-	MOVLW      1
-	MOVWF      ?FLOC___interruptT6+0
-L_interrupt10:
-	MOVF       ?FLOC___interruptT6+0, 0
-	MOVWF      _estado+0
-	MOVLW      0
-	BTFSC      _estado+0, 7
-	MOVLW      255
-	MOVWF      _estado+1
-L_interrupt8:
-	BTFSS      RE2_bit+0, BitPos(RE2_bit+0)
-	GOTO       L_interrupt11
-L_interrupt11:
-	BTFSS      RE1_bit+0, BitPos(RE1_bit+0)
-	GOTO       L_interrupt12
-L_interrupt12:
-	BCF        TMR1IF_bit+0, BitPos(TMR1IF_bit+0)
-	MOVLW      11
-	MOVWF      TMR1H+0
-	MOVLW      220
-	MOVWF      TMR1L+0
-L_interrupt7:
 L_end_interrupt:
-L__interrupt18:
+L__interrupt19:
 	MOVF       ___savePCLATH+0, 0
 	MOVWF      PCLATH+0
 	SWAPF      ___saveSTATUS+0, 0
@@ -197,24 +149,18 @@ _main:
 	MOVLW      14
 	MOVWF      ADCON1+0
 	BSF        TRISA+0, 0
-	MOVLW      49
-	MOVWF      T1CON+0
-	BCF        TMR1IF_bit+0, BitPos(TMR1IF_bit+0)
-	MOVLW      11
-	MOVWF      TMR1H+0
-	MOVLW      220
-	MOVWF      TMR1L+0
-	BSF        TMR1IE_bit+0, BitPos(TMR1IE_bit+0)
+	BSF        TRISA+0, 3
+	BSF        TRISA+0, 4
+	BSF        TRISA+0, 5
 	MOVLW      135
 	MOVWF      OPTION_REG+0
-	MOVLW      9
-	MOVWF      T1CON+0
 	MOVLW      100
 	MOVWF      TMR0+0
 	MOVLW      224
 	MOVWF      INTCON+0
-	MOVLW      255
-	MOVWF      TRISE+0
+	BSF        TRISE0_bit+0, BitPos(TRISE0_bit+0)
+	BSF        TRISE1_bit+0, BitPos(TRISE1_bit+0)
+	BSF        TRISE2_bit+0, BitPos(TRISE2_bit+0)
 	CLRF       TRISB+0
 	CLRF       PORTB+0
 	BCF        RB4_bit+0, BitPos(RB4_bit+0)
@@ -229,13 +175,13 @@ _main:
 	MOVWF      R12+0
 	MOVLW      85
 	MOVWF      R13+0
-L_main13:
+L_main7:
 	DECFSZ     R13+0, 1
-	GOTO       L_main13
+	GOTO       L_main7
 	DECFSZ     R12+0, 1
-	GOTO       L_main13
+	GOTO       L_main7
 	DECFSZ     R11+0, 1
-	GOTO       L_main13
+	GOTO       L_main7
 	NOP
 	NOP
 	MOVLW      ?lstr1_projetomicrocontroladores+0
@@ -247,7 +193,7 @@ L_main13:
 	MOVLW      13
 	MOVWF      FARG_UART1_Write_data_+0
 	CALL       _UART1_Write+0
-L_main14:
+L_main8:
 	CLRF       FARG_ADC_Read_channel+0
 	CALL       _ADC_Read+0
 	MOVF       R0+0, 0
@@ -285,14 +231,19 @@ L_main14:
 	MOVWF      _valorAD+2
 	MOVF       R0+3, 0
 	MOVWF      _valorAD+3
-	MOVF       R0+0, 0
+	MOVF       _estado+0, 0
+	IORWF      _estado+1, 0
+	BTFSC      STATUS+0, 2
+	GOTO       L_main10
+	MOVLW      0
+	BTFSC      RA3_bit+0, BitPos(RA3_bit+0)
+	MOVLW      1
 	MOVWF      FARG_IntToStr_input+0
-	MOVF       R0+1, 0
-	MOVWF      FARG_IntToStr_input+1
-	MOVLW      _txt+0
+	CLRF       FARG_IntToStr_input+1
+	MOVLW      _st+0
 	MOVWF      FARG_IntToStr_output+0
 	CALL       _IntToStr+0
-	MOVLW      _txt+0
+	MOVLW      _st+0
 	MOVWF      FARG_UART1_Write_Text_uart_text+0
 	CALL       _UART1_Write_Text+0
 	MOVLW      ?lstr2_projetomicrocontroladores+0
@@ -304,14 +255,19 @@ L_main14:
 	MOVLW      13
 	MOVWF      FARG_UART1_Write_data_+0
 	CALL       _UART1_Write+0
-	MOVF       _setpoint+0, 0
+	MOVLW      13
+	MOVWF      FARG_UART1_Write_data_+0
+	CALL       _UART1_Write+0
+	GOTO       L_main11
+L_main10:
+	MOVF       _valorAD+0, 0
 	MOVWF      FARG_IntToStr_input+0
-	MOVF       _setpoint+1, 0
+	MOVF       _valorAD+1, 0
 	MOVWF      FARG_IntToStr_input+1
-	MOVLW      _st+0
+	MOVLW      _txt+0
 	MOVWF      FARG_IntToStr_output+0
 	CALL       _IntToStr+0
-	MOVLW      _st+0
+	MOVLW      _txt+0
 	MOVWF      FARG_UART1_Write_Text_uart_text+0
 	CALL       _UART1_Write_Text+0
 	MOVLW      ?lstr3_projetomicrocontroladores+0
@@ -323,24 +279,35 @@ L_main14:
 	MOVLW      13
 	MOVWF      FARG_UART1_Write_data_+0
 	CALL       _UART1_Write+0
-	MOVLW      13
-	MOVWF      FARG_UART1_Write_data_+0
-	CALL       _UART1_Write+0
+L_main11:
+	BTFSC      RA3_bit+0, BitPos(RA3_bit+0)
+	GOTO       L_main12
+	BSF        _oldstateCima+0, BitPos(_oldstateCima+0)
 	MOVLW      3
 	MOVWF      R11+0
 	MOVLW      138
 	MOVWF      R12+0
 	MOVLW      85
 	MOVWF      R13+0
-L_main16:
+L_main13:
 	DECFSZ     R13+0, 1
-	GOTO       L_main16
+	GOTO       L_main13
 	DECFSZ     R12+0, 1
-	GOTO       L_main16
+	GOTO       L_main13
 	DECFSZ     R11+0, 1
+	GOTO       L_main13
+	NOP
+	NOP
+L_main12:
+	BTFSS      _oldstateCima+0, BitPos(_oldstateCima+0)
 	GOTO       L_main16
-	NOP
-	NOP
+	BTFSC      RA3_bit+0, BitPos(RA3_bit+0)
+	GOTO       L_main16
+L__main17:
+	COMF       _estado+0, 1
+	COMF       _estado+1, 1
+	BCF        _oldstateCima+0, BitPos(_oldstateCima+0)
+L_main16:
 	MOVLW      10
 	MOVWF      R4+0
 	CLRF       R4+1
@@ -419,7 +386,7 @@ L_main16:
 	MOVWF      _Lsd+0
 	MOVF       FLOC__main+1, 0
 	MOVWF      _Lsd+1
-	GOTO       L_main14
+	GOTO       L_main8
 L_end_main:
 	GOTO       $+0
 ; end of _main

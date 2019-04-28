@@ -1,0 +1,14 @@
+0	1	mikroCPIC1618.exe -MSF -DBG -pP16F877A -GC -DL -O11111104 -fo20 -N"D:\ENGENHARIA DE CONTROLE E AUTOMAÇÃO\9 º PERIODO\Microcontroladores\projetomicrocontroladores\projetomicrocontroladores.mcppi" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for PIC\Uses\P16\" -SP"D:\ENGENHARIA DE CONTROLE E AUTOMAÇÃO\9 º PERIODO\Microcontroladores\projetomicrocontroladores\" "projetomicrocontroladores.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_CType.mcl" "__Lib_CString.mcl" "__Lib_CStdlib.mcl" "__Lib_CMath.mcl" "__Lib_Conversions.mcl" "__Lib_Time.mcl" "__Lib_Button.mcl" "__Lib_SoftUART.mcl" "__Lib_ADC_A_C.mcl" "__Lib_UART_c67.mcl" "__Lib_PortExpander.mcl"	 
+hint: 0	1139	Available RAM: 352 [bytes], Available ROM: 8192 [bytes]	 
+diagnostics: 0	122	Compilation Started	projetomicrocontroladores.c
+warning: 101	1509	Generated baud rate is 9615 bps (error = 0.16 percent)	projetomicrocontroladores.c
+diagnostics: 140	123	Compiled Successfully	projetomicrocontroladores.c
+hint: 136	1164	Variable 'Pattern' has been eliminated by optimizer	projetomicrocontroladores.c
+diagnostics: 0	127	All files Compiled in 78 ms	 
+hint: 0	1144	Used RAM (bytes): 102 (29%)  Free RAM (bytes): 250 (71%)	Used RAM (bytes): 102 (29%)  Free RAM (bytes): 250 (71%)
+hint: 0	1144	Used ROM (program words): 1616 (20%)  Free ROM (program words): 6576 (80%)	Used ROM (program words): 1616 (20%)  Free ROM (program words): 6576 (80%)
+diagnostics: 0	125	Project Linked Successfully	projetomicrocontroladores.mcppi
+hint: 0	1004	COFF file successfully generated	COFF file successfully generated
+diagnostics: 0	128	Linked in 250 ms	 
+diagnostics: 0	129	Project 'projetomicrocontroladores.mcppi' completed: 374 ms	 
+diagnostics: 0	103	Finished successfully: 27 abr 2019, 23:55:33	projetomicrocontroladores.mcppi

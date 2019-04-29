@@ -69,8 +69,10 @@ bclie
 bclie_bit
 bclif
 bclif_bit
+beforegap
 bf
 bf_bit
+blink
 boot16_delay_5ms
 brgh
 brgh_bit
@@ -157,6 +159,10 @@ comfrem
 compare_double
 cos
 cosh
+count
+counttimer1
+counttimer2_v1
+counttimer2_v2
 cren
 cren_bit
 csrc
@@ -230,8 +236,9 @@ eeif
 eeif_bit
 eepgd
 eepgd_bit
+eeprom_read
+eeprom_write
 equals_double
-estado
 exp
 expander_init
 expander_init_advanced
@@ -260,6 +267,7 @@ floor
 frexp
 fsr
 fsrptr
+gap
 gcen
 gcen_bit
 get_fosc_khz
@@ -371,9 +379,6 @@ obf_bit
 obf_trise_bit
 oerr
 oerr_bit
-oldstatebaixo
-oldstatecima
-oldstateok
 option_reg
 p
 p_bit
@@ -392,6 +397,7 @@ peie
 peie_bit
 pen
 pen_bit
+ph
 pie1
 pie2
 pir1
@@ -590,7 +596,7 @@ sspm3_bit
 sspov
 sspov_bit
 sspstat
-st
+state
 status
 strcat
 strchr
@@ -639,6 +645,8 @@ tanh
 time_datetoepoch
 time_epochtodate
 time_jd1970
+timedelayoff
+timedelayon
 tmr0
 tmr0ie
 tmr0ie_bit
@@ -760,10 +768,8 @@ txif
 txif_bit
 txreg
 txsta
-txt
 ua
 ua_bit
-uart_rd
 uart1_data_ready
 uart1_init
 uart1_read
@@ -772,7 +778,6 @@ uart1_tx_idle
 uart1_write
 uart1_write_text
 uldiv
-valorad
 vdelay_advanced_ms
 vdelay_ms
 vref_mask
